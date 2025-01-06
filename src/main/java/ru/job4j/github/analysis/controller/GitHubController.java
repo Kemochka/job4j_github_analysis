@@ -18,17 +18,23 @@ public class GitHubController {
 
     @GetMapping("/repositories")
     public List<Repository> getAllRepositories() {
-        return List.of();
+        return repositoryService.findAll();
     }
 
     @GetMapping("/commits/{name}")
     public List<RepositoryCommits> getCommits(@PathVariable(value = "name") String name) {
-        return List.of();
+        return repositoryService.getCommitsByUserName(name);
     }
 
     @PostMapping("/repository")
     public ResponseEntity<Void> create(@RequestBody Repository repository) {
         repositoryService.create(repository);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/gitHub/{userName}")
+    public ResponseEntity<Void> createGitHub(@PathVariable(value = "userName") String userName) {
+        this.repositoryService.createForUser(userName);
         return ResponseEntity.noContent().build();
     }
 }
